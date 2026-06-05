@@ -1,0 +1,14 @@
+# MQTT broker + the signed-telemetry demo (device publishes, gateway verifies).
+services:
+  broker:
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  demo:
+    build: .
+    environment:
+      MQTT_HOST: broker
+    command: ["python", "mqtt_demo.py"]
+    depends_on:
+      - broker
